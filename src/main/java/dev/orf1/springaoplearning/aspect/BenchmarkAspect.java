@@ -9,18 +9,18 @@ import org.springframework.context.annotation.Configuration;
 
 @Aspect
 @Configuration
-public class MetricsAspect {
-    private final Logger LOGGER = LoggerFactory.getLogger(MetricsAspect.class);
+public class BenchmarkAspect {
+    private final Logger LOGGER = LoggerFactory.getLogger(BenchmarkAspect.class);
 
-    public MetricsAspect() {
-        LOGGER.info("Metrics interception started");
+    public BenchmarkAspect() {
+        LOGGER.info("Benchmark weaving started");
     }
 
-    @Around(value = "dev.orf1.springaoplearning.aspect.JoinPointConfig.benchmarkAnnotation()")
+    @Around(value = "dev.orf1.springaoplearning.aspect.Pointcuts.benchmarkAnnotation()")
     public Object aroundBenchmarkAnnotation(ProceedingJoinPoint joinPoint) throws Throwable {
         long s = System.currentTimeMillis();
         Object object = joinPoint.proceed();
-        LOGGER.info("Metrics: {} took {} ms", joinPoint, System.currentTimeMillis() - s);
+        LOGGER.info("Metrics: {} took {} ms", joinPoint.getTarget(), System.currentTimeMillis() - s);
         return object;
     }
 }
